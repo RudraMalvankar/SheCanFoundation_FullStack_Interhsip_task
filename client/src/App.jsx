@@ -23,23 +23,6 @@ const adminLoginSchema = z.object({
 const ADMIN_TOKEN_KEY = "she-can-admin-token";
 const ADMIN_USER_KEY = "she-can-admin-user";
 
-const foundationPillars = [
-  {
-    title: "Women first",
-    description: "Education, health, and opportunity programs rooted in community needs.",
-  },
-  {
-    title: "Community-led",
-    description: "Local partnerships that keep the work practical and sustainable.",
-  },
-  {
-    title: "Actionable support",
-    description: "Volunteer time, skills, and resources turned into practical support.",
-  },
-];
-
-const trustMarks = ["Registered NGO", "Responsive form", "Secure admin access"];
-
 function formatDate(value) {
   if (!value) {
     return "Just now";
@@ -255,10 +238,8 @@ export default function App() {
           <div className="admin-hero">
             <div>
               <span className="eyebrow admin-eyebrow">Admin Panel</span>
-              <h1>Review submissions from the She Can Foundation form.</h1>
-              <p>
-                Login to view protected submissions, verify the connected database, and keep everything in one place.
-              </p>
+              <h1>Review form submissions in one simple dashboard.</h1>
+              <p>Sign in with the admin credentials from your root <span>.env</span> file to view protected messages.</p>
             </div>
 
             <div className="admin-actions">
@@ -281,17 +262,15 @@ export default function App() {
             <div className="admin-login-layout">
               <div className="admin-panel-copy">
                 <strong>Protected access</strong>
-                <p>
-                  Use the admin username and password defined in your root <span>.env</span>. The login issues a short-lived JWT token and unlocks the dashboard.
-                </p>
+                <p>Use the values set in the root <span>.env</span> file. The login returns a short-lived JWT token.</p>
                 <div className="mini-notes">
                   <div>
                     <span>Route</span>
                     <strong>/admin</strong>
                   </div>
                   <div>
-                    <span>API</span>
-                    <strong>/api/admin/submissions</strong>
+                    <span>Hint</span>
+                    <strong>admin / admin123</strong>
                   </div>
                 </div>
               </div>
@@ -300,13 +279,15 @@ export default function App() {
                 <form className="contact-form" onSubmit={handleAdminSubmit(onAdminLogin)} noValidate>
                   <label>
                     <span>Admin username</span>
-                    <input type="text" placeholder="admin" {...registerAdmin("username")} />
+                    <input type="text" placeholder="admin" aria-describedby="admin-username-hint" {...registerAdmin("username")} />
+                    <small id="admin-username-hint" className="input-hint">Hint: admin</small>
                     {adminErrors.username ? <em>{adminErrors.username.message}</em> : null}
                   </label>
 
                   <label>
                     <span>Password</span>
-                    <input type="password" placeholder="••••••••" {...registerAdmin("password")} />
+                    <input type="password" placeholder="admin123" aria-describedby="admin-password-hint" {...registerAdmin("password")} />
+                    <small id="admin-password-hint" className="input-hint">Hint: admin123</small>
                     {adminErrors.password ? <em>{adminErrors.password.message}</em> : null}
                   </label>
 
@@ -378,8 +359,8 @@ export default function App() {
     <main className="page-shell">
       <header className="site-header">
         <div>
-          <span className="eyebrow">She Can Foundation</span>
-          <p className="site-subtitle">Global vision, local action</p>
+          <span className="brand-name">She Can Foundation</span>
+          <p className="site-subtitle">Simple contact form and secure admin access</p>
         </div>
 
         <div className="site-header-actions">
@@ -391,94 +372,47 @@ export default function App() {
 
       <section className="hero-card">
         <div className="hero-copy">
-          <div className="hero-topbar">
-            <span className="hero-kicker">Together we can change the world</span>
-          </div>
-
+          <span className="eyebrow">She Can Foundation</span>
           <h1>Support women through education, health, and opportunity.</h1>
           <p>
-            A clean nonprofit-style MERN site with a calm visual hierarchy, a dependable contact form, and a protected admin view for submissions.
+            A minimal MERN site with a dependable contact form, validated submission flow, and a protected admin view.
           </p>
-
-          <div className="hero-metrics" aria-label="Key site qualities">
-            {trustMarks.map((mark) => (
-              <div className="metric-pill" key={mark}>
-                {mark}
-              </div>
-            ))}
-          </div>
-
-          <div className="hero-points">
-            <div>
-              <strong>Clear mission</strong>
-              <span>Concise messaging that reads like a real organization.</span>
-            </div>
-            <div>
-              <strong>Reliable flow</strong>
-              <span>Submits through an API and stores entries for review.</span>
-            </div>
-            <div>
-              <strong>Protected review</strong>
-              <span>Admin access stays separate at `/admin`.</span>
-            </div>
-          </div>
         </div>
 
-        <div className="form-stack">
-          <aside className="mission-panel">
-            <span className="eyebrow mission-eyebrow">About us</span>
-            <h2>Global vision, local action.</h2>
-            <p>
-              This interface is styled to echo a nonprofit website: reassuring, human, and purposeful without leaning on decorative effects.
-            </p>
-
-            <div className="foundation-grid">
-              {foundationPillars.map((pillar) => (
-                <article className="foundation-card" key={pillar.title}>
-                  <strong>{pillar.title}</strong>
-                  <span>{pillar.description}</span>
-                </article>
-              ))}
-            </div>
-          </aside>
-
-          <div className="form-panel">
-            <div className={`status-banner ${submitState}`} aria-live="polite">
-              {statusText}
-            </div>
-
-            <div className="form-intro">
-              <span className="eyebrow form-eyebrow">Contact us</span>
-              <h2>Send a message to the foundation team.</h2>
-              <p>
-                Use this form for volunteer interest, partnership ideas, or general questions. The experience is intentionally simple and dependable.
-              </p>
-            </div>
-
-            <form className="contact-form" onSubmit={handleSubmit(onSubmit)} noValidate>
-              <label>
-                <span>Name</span>
-                <input type="text" placeholder="Your full name" {...register("name")} />
-                {errors.name ? <em>{errors.name.message}</em> : null}
-              </label>
-
-              <label>
-                <span>Email</span>
-                <input type="email" placeholder="you@example.com" {...register("email")} />
-                {errors.email ? <em>{errors.email.message}</em> : null}
-              </label>
-
-              <label>
-                <span>Message</span>
-                <textarea rows="5" placeholder="Write your message here" {...register("message")} />
-                {errors.message ? <em>{errors.message.message}</em> : null}
-              </label>
-
-              <button type="submit" disabled={!canSubmit}>
-                {submitState === "loading" ? "Submitting..." : "Submit"}
-              </button>
-            </form>
+        <div className="form-panel">
+          <div className={`status-banner ${submitState}`} aria-live="polite">
+            {statusText}
           </div>
+
+          <div className="form-intro">
+            <span className="eyebrow form-eyebrow">Contact us</span>
+            <h2>Send a message to the foundation team.</h2>
+            <p>Use this form for volunteer interest, partnership ideas, or general questions.</p>
+          </div>
+
+          <form className="contact-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+            <label>
+              <span>Name</span>
+              <input type="text" placeholder="Your full name" {...register("name")} />
+              {errors.name ? <em>{errors.name.message}</em> : null}
+            </label>
+
+            <label>
+              <span>Email</span>
+              <input type="email" placeholder="you@example.com" {...register("email")} />
+              {errors.email ? <em>{errors.email.message}</em> : null}
+            </label>
+
+            <label>
+              <span>Message</span>
+              <textarea rows="5" placeholder="Write your message here" {...register("message")} />
+              {errors.message ? <em>{errors.message.message}</em> : null}
+            </label>
+
+            <button type="submit" disabled={!canSubmit}>
+              {submitState === "loading" ? "Submitting..." : "Submit"}
+            </button>
+          </form>
         </div>
       </section>
     </main>
