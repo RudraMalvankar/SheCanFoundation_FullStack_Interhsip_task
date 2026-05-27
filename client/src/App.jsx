@@ -22,6 +22,11 @@ const adminLoginSchema = z.object({
 
 const ADMIN_TOKEN_KEY = "she-can-admin-token";
 const ADMIN_USER_KEY = "she-can-admin-user";
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
+function apiPath(pathname) {
+  return `${API_BASE_URL}${pathname}`;
+}
 
 function formatDate(value) {
   if (!value) {
@@ -129,7 +134,7 @@ export default function App() {
     setAdminMessage("Loading submissions...");
 
     try {
-      const response = await fetch("/api/admin/submissions", {
+      const response = await fetch(apiPath("/api/admin/submissions"), {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -164,7 +169,7 @@ export default function App() {
     setSubmitState("loading");
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(apiPath("/api/contact"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -190,7 +195,7 @@ export default function App() {
     setAdminMessage("Checking credentials...");
 
     try {
-      const response = await fetch("/api/admin/login", {
+      const response = await fetch(apiPath("/api/admin/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

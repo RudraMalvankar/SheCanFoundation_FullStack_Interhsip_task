@@ -18,6 +18,13 @@ A MERN internship task for She Can Foundation.
 - Admin panel: `http://localhost:5173/admin` in development
 - Production app: `http://localhost:5000`
 
+## Frontend API URL
+
+The client now reads `VITE_API_URL` for API requests.
+
+- In local development, leave it unset so Vite can proxy `/api` to the backend.
+- In production, set it to your backend URL, for example `https://your-render-service.onrender.com`.
+
 ## Admin Login
 
 Set these values in the root `.env` file:
